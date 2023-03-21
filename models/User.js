@@ -26,7 +26,6 @@ const userSchema = mongoose.Schema(
     },
     phone: {
       type: String,
-
       validate: [
         validator.isMobilePhone,
         "Please provide a valid phone number",
@@ -36,11 +35,9 @@ const userSchema = mongoose.Schema(
 
     address: {
       type: String,
-      required: true,
     },
     area: {
       type: String,
-      required: true,
     },
     carName: {
       type: String,
@@ -52,7 +49,6 @@ const userSchema = mongoose.Schema(
 
     vehicleType: {
       type: String,
-
       enum: {
         values: ["car", "bike"],
         message: "{VALUE} can't be a vehicle type",
@@ -66,22 +62,30 @@ const userSchema = mongoose.Schema(
         message: "{VALUE} can't be a status",
       },
     },
+    status: {
+      type: String,
+
+      enum: {
+        values: ["learner", "rider", "admin"],
+        message: "{VALUE} can't be a role",
+      },
+    },
     profilePictureImageURLs: [
       {
         type: String,
-        validate: [valid.isURL, "wrong url"],
+        validate: [validator.isURL, "wrong url"],
       },
     ],
     drivingLicenseImageURLs: [
       {
         type: String,
-        validate: [valid.isURL, "wrong url"],
+        validate: [validator.isURL, "wrong url"],
       },
     ],
     nidImageURLs: [
       {
         type: String,
-        validate: [valid.isURL, "wrong url"],
+        validate: [validator.isURL, "wrong url"],
       },
     ],
   },

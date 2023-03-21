@@ -7,7 +7,7 @@ app.use(cors());
 
 // import routes
 // const jobRoute = require('./routes/job.route');
-// const userRoute = require('./routes/user.route');
+const userRoute = require("./routes/user.route");
 
 // routes
 app.get("/", (req, res) => {
@@ -15,6 +15,6 @@ app.get("/", (req, res) => {
 });
 
 // app.use('/api/v1', jobRoute);
-// app.use('/api/v1/user', userRoute);
+app.use("/api/v1/user", userRoute);
 
 module.exports = app;
