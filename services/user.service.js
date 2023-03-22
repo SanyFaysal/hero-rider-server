@@ -10,9 +10,15 @@ exports.findUserByEmailService = async (email) => {
   return result;
 };
 
-exports.getUsersService = async (queries, { filterByAge }) => {
-  console.log(filterByAge);
-  const result = await User.find(filterByAge)
+exports.getUsersService = async (queries, { filterByAge, search }) => {
+  const result = await User.find({
+    ...filterByAge,
+    $or: [
+      { email: { $regex: search } },
+      { fullName: { $regex: search } },
+      { phone: { $regex: search } },
+    ],
+  })
     .skip(queries.skip)
     .limit(queries.limit);
 

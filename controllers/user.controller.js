@@ -10,10 +10,9 @@ exports.signup = async (req, res) => {
   try {
     let data = req.body;
     const { email } = data;
-    console.log(data);
+
     const [profilePicture, nid, drivingLicense] = req.files;
 
-    console.log(profilePicture, drivingLicense, nid);
     data.profilePicture = profilePicture || [];
     data.nid = nid || [];
     data.drivingLicense = drivingLicense || [];
@@ -118,7 +117,7 @@ exports.getUsers = async (req, res) => {
 
     //
     const filters = {};
-    const { age: ageRange } = req.query;
+    const { age: ageRange, search } = req.query;
     let filterByAge = { age: ageRange };
 
     let filterString = JSON.stringify(filterByAge);
@@ -129,6 +128,7 @@ exports.getUsers = async (req, res) => {
 
     filterByAge = JSON.parse(filterString);
     filters.filterByAge = filterByAge;
+    filters.search = search;
     const {
       page: totalPage,
       result,

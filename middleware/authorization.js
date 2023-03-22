@@ -1,4 +1,4 @@
-const { reset } = require('nodemon');
+const { reset } = require("nodemon");
 
 exports.authorization = (...role) => {
   return (req, res, next) => {
@@ -7,15 +7,15 @@ exports.authorization = (...role) => {
 
       if (!role.includes(userRole)) {
         return res.status(403).json({
-          status: 'failed',
-          error: 'You are not authorized',
+          status: "failed",
+          error: "You are not authorized",
         });
       }
 
       next();
     } catch (error) {
       res.status(403).json({
-        status: 'failed',
+        status: "failed",
         error: error.message,
       });
     }
