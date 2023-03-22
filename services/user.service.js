@@ -18,3 +18,12 @@ exports.getUsersService = async (queries) => {
   // const pageFound = Math.ceil(totalFound / queries.limit);
   return { page, result, total };
 };
+
+exports.updateUsersRoleService = async (emails) => {
+  const result = await User.updateMany(
+    { email: emails },
+    { $set: { status: "blocked" } },
+    { runValidators: true }
+  );
+  return result;
+};

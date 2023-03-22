@@ -2,6 +2,7 @@ const {
   findUserByEmailService,
   signupService,
   getUsersService,
+  updateUsersRoleService,
 } = require("../services/user.service");
 const { generateToken } = require("../utils/token");
 
@@ -122,6 +123,22 @@ exports.getUsers = async (req, res) => {
       data: result,
       page: totalPage,
       total,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "failed",
+      error: error.message,
+    });
+  }
+};
+
+exports.updateUsersRole = async (req, res) => {
+  try {
+    const emails = req.body;
+    const result = await updateUsersRoleService(emails);
+    res.status(200).json({
+      status: "Success",
+      message: "Successfully updated",
     });
   } catch (error) {
     res.status(400).json({

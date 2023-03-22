@@ -6,7 +6,11 @@ const { verifyToken } = require("../middleware/verifyToken");
 
 // router.post("/file-upload",uploader.array("image"), userController.fileUpload);
 
-router.get("/all", userController.getUsers);
+router
+  .route("/all")
+  .get(userController.getUsers)
+  .patch(userController.updateUsersRole);
+
 router.post("/signup", uploader.array("image"), userController.signup);
 router.post("/login", userController.findUserByEmail);
 router.get("/me", verifyToken, userController.getMe);
