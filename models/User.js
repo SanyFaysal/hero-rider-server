@@ -62,29 +62,30 @@ const userSchema = mongoose.Schema(
         message: "{VALUE} can't be a status",
       },
     },
-    status: {
+    role: {
       type: String,
-
       enum: {
         values: ["learner", "rider", "admin"],
         message: "{VALUE} can't be a role",
       },
     },
-    profilePictureImageURLs: [
+    profilePicture: [
       {
-        type: String,
+        type: Array,
         validate: [validator.isURL, "wrong url"],
       },
     ],
-    drivingLicenseImageURLs: [
+
+    drivingLicense: [
       {
-        type: String,
+        type: Array,
         validate: [validator.isURL, "wrong url"],
       },
     ],
-    nidImageURLs: [
+
+    nid: [
       {
-        type: String,
+        type: Array,
         validate: [validator.isURL, "wrong url"],
       },
     ],

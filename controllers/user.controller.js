@@ -1,13 +1,21 @@
 const {
   findUserByEmailService,
   signupService,
+  getUsersService,
 } = require("../services/user.service");
 const { generateToken } = require("../utils/token");
 
 exports.signup = async (req, res) => {
   try {
-    const data = req.body;
+    let data = req.body;
     const { email } = data;
+    console.log(data);
+    const [profilePicture, nid, drivingLicense] = req.files;
+
+    console.log(profilePicture, drivingLicense, nid);
+    data.profilePicture = profilePicture || [];
+    data.nid = nid || [];
+    data.drivingLicense = drivingLicense || [];
     const isAvailableUser = await findUserByEmailService(email);
     if (isAvailableUser) {
       return res.status(404).json({
@@ -16,11 +24,13 @@ exports.signup = async (req, res) => {
       });
     }
     const result = await signupService(data);
-    const token = generateToken(result);
+    const token = generateToken(result.result);
+
     res.status(200).json({
       status: "Success",
       message: "Signup successful",
       token,
+      data: result?.data,
     });
   } catch (error) {
     res.status(400).json({
@@ -84,11 +94,34 @@ exports.getMe = async (req, res) => {
         error: "Token is not verified",
       });
     }
-
     res.status(200).json({
       status: "Success",
       message: "successfully get data",
       data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "failed",
+      error: error.message,
+    });
+  }
+};
+
+exports.getUsers = async (req, res) => {
+  try {
+    let queries = {};
+    const { page = 1, limit = 5 } = req.query;
+    const skip = (page - 1) * parseInt(limit);
+    queries.skip = skip;
+    queries.limit = parseInt(limit);
+
+    const { page: totalPage, result, total } = await getUsersService(queries);
+    res.status(200).json({
+      status: "Success",
+      message: "successfully get data",
+      data: result,
+      page: totalPage,
+      total,
     });
   } catch (error) {
     res.status(400).json({
