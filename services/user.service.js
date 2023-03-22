@@ -10,8 +10,11 @@ exports.findUserByEmailService = async (email) => {
   return result;
 };
 
-exports.getUsersService = async (queries) => {
-  const result = await User.find({}).skip(queries.skip).limit(queries.limit);
+exports.getUsersService = async (queries, { filterByAge }) => {
+  console.log(filterByAge);
+  const result = await User.find(filterByAge)
+    .skip(queries.skip)
+    .limit(queries.limit);
 
   const total = await User.countDocuments(result);
   const page = Math.ceil(total / queries.limit);

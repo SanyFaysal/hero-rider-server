@@ -116,7 +116,24 @@ exports.getUsers = async (req, res) => {
     queries.skip = skip;
     queries.limit = parseInt(limit);
 
-    const { page: totalPage, result, total } = await getUsersService(queries);
+    //
+    const filters = {};
+    const { age: ageRange } = req.query;
+    let filterByAge = { age: ageRange };
+
+    let filterString = JSON.stringify(filterByAge);
+    filterString = filterString.replace(
+      /\b(gte|lte)\b/g,
+      (match) => `$${match}`
+    );
+
+    filterByAge = JSON.parse(filterString);
+    filters.filterByAge = filterByAge;
+    const {
+      page: totalPage,
+      result,
+      total,
+    } = await getUsersService(queries, filters);
     res.status(200).json({
       status: "Success",
       message: "successfully get data",
